@@ -170,7 +170,7 @@ async def on_message(message):
             await message.reply("i kicked this idiot for using dank memer before level 1 lol noob get gud")
             return
 
-        if message.guild == None and message.author.id != 834425748361445406:
+        if message.guild == None and message.author.id != 834425748361445406 and message.author.id != 904047456327729172:
           await message.reply("no u my dms closed")
           return
         
