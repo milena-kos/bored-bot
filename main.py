@@ -184,9 +184,6 @@ async def on_message(message):
               person = person[1:]
           give_money(person, 1000)
         
-        if "235148962103951360" in text or "Carl-bot" in text:
-          await message.reply("https://youtu.be/Wl9oUBgFk6Y")
-        
         if job == 3 and message.author == worker:
           try:
             num = int(text)
@@ -361,7 +358,8 @@ async def on_message(message):
                   change_value(message.author.id, "passive_earnings_balance", get_value(message.author.id, "passive_earnings_max"))
 
                 await message.reply("Passsive earnings dashboard:\n\nBalance: " + str(round(get_value(message.author.id, "passive_earnings_balance"))) + "/" + str(get_value(message.author.id, "passive_earnings_max")) + "$ (collect using bored collect)\n\n" +
-                  "You are getting " + str(get_value(message.author.id, "passive_earnings_speed")) + " per minute.\n\nUpgrades:\nbored upgrade speed - " + str(get_value(message.author.id, "passive_earnings_speed_cost")) + "$\nbored upgrade max - " + str(get_value(message.author.id, "passive_earnings_max_cost")) + "$\n\nTertia Optio:registered:")
+                  "You are getting " + str(get_value(message.author.id, "passive_earnings_speed")) + " per minute.\n\nUpgrades:\n" +
+                  "bored upgrade speed - " + str(get_value(message.author.id, "passive_earnings_speed_cost")) + "$\nbored upgrade max - " + str(get_value(message.author.id, "passive_earnings_max_cost")) + "$\n\nTertia Optio:registered:")
 
             elif text == "collect":
               try:
@@ -798,7 +796,7 @@ async def on_message(message):
                       color = 0x00ff00
                       give_money(to_rob, -money, False)
                     embedVar = discord.Embed(title="Rob result:", description=result, color=color)
-                    await message.reply(embed=embedVar)
+                    await message.reply(embed=add_ad(embedVar))
                     change_value(message.author.id, "rob_time", time())
                   else:
                     await message.reply("idk who it is")
