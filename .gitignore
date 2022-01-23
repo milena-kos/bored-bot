@@ -1,5 +1,5 @@
 token_getter.py
-balances.json
+*.json
 pi.json
 __pycache__
 keep_alive.py

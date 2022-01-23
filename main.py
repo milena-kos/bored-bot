@@ -1262,7 +1262,7 @@ async def on_message(message):
             else:
                 state = False
     except discord.errors.HTTPException:
-        await message.channel.send("So basiclly message is over 2000 symbols so i have no clue what is happening")
+        await message.channel.send("So basiclly message is over 2000 symbols so i have no clue what is happening, command maybe ran maybe it crashed idk not my fault")
     except Exception as e:
         await message.reply("There is an error happend:\n" + str(traceback.format_exc()))
         try:
