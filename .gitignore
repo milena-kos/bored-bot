@@ -1,5 +1,8 @@
 token_getter.py
-*.json
+balances.json
 pi.json
 __pycache__
 keep_alive.py
+pyproject.toml
+poetry.lock
+.breakpoints
