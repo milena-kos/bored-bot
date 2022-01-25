@@ -418,12 +418,11 @@ async def on_message(message):
                   if person[0] == "!":
                     person = person[1:]
 
-                if amount > 0:
+                if amount > 0 and str(person) != str(message.author.id):
                   if get_value(message.author.id, "money") >= amount:
                     give_money(message.author.id, -amount)
                     give_money(person, amount, False)
-                    if person != message.author.id:
-                      change_value(message.author.id, "rep", 5, True)
+                    change_value(message.author.id, "rep", 5, True)
                     await message.reply("gave " + str(amount) + "$ to <@" + person + ">")
                   else:
                     await message.reply("get gud you dont have enough money")
