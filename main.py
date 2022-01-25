@@ -277,8 +277,11 @@ async def on_message(message):
             text = text[6:]
             original = original[6:]
 
-            if random.randint(0, 100) == 69:
+            if random.randint(0, 20) == 14:
               val = give_money(message.author.id, get_value(message.author.id, "rep"), False)
+              oh_prefix = "FUCK"
+              if get_value(message.author.id, "rep") > 0:
+                oh_prefix = "YEAH!"
               await message.reply(f"**OH FUCK**\n\nyou just gained money equal to your rep, or exactly {val}$!")
             
             if text == "crash":
