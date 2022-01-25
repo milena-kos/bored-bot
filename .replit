@@ -1,0 +1,2 @@
+language = "bash"
+run = "pip install natsort discord flask && python main.py"

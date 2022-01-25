@@ -1,5 +1,4 @@
-import asyncio, requests, random, os, decimal, json, traceback, natsort, discord
-from PIL import Image, ImageFont, ImageDraw, ImageColor
+import asyncio, requests, random, os, decimal, json, traceback, natsort, discord, math
 from time import sleep, time_ns, time
 
 try:
