@@ -927,6 +927,8 @@ async def on_message(message):
                   my_secret = os.environ['textgen']
                   r = requests.post("https://api.deepai.org/api/text-generator", data={'text': original,}, headers={'api-key': my_secret})
                   await message.reply(r.json()["output"])
+                except KeyError:
+                  await message.reply("Well damn you cant generate stuff on beta version of bot am sorry")
                 except Exception:
                   await message.reply("Text generator api got an error, please try again later.")
             
