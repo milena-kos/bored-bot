@@ -298,7 +298,7 @@ async def on_message(message):
               await message.reply(f'Pong! Latency is {round(bot.latency * 1000)} ms!')
             
             elif text == 'help':
-                embed = discord.Embed(title="Help", description="'bored simon says', 'bored idea', 'bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00)
+                embed = discord.Embed(title="Help", description="'bored simon says', 'bored trivia, 'bored idea', 'bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00)
                 embed.add_field(name="Economy commands", value="'bored passive, 'bored outside', 'bored bal', 'bored casino', 'bored rob', bored shop', 'bored reset', 'bored work', 'bored lb', 'bored murder', 'bored heist', bored weapon shop', 'bored heist shop' 'bored donate', 'bored daily', 'bored weekly'")
                 await message.reply(embed=add_ad(embed))
             
@@ -565,6 +565,41 @@ async def on_message(message):
                   change_value(message.author.id, "weekly_time", time())
                 else:
                   await message.reply("there is " + str(round(604800 - difference)) + " seconds left!")
+
+            elif text == "trivia":
+              a = requests.get("https://opentdb.com/api.php?amount=1&encode=url3986").json()["results"][0]
+
+              correct = random.randint(0, len(a["incorrect_answers"]))
+              
+              answers = []
+              for i in a["incorrect_answers"]:
+                answers.append(unquote(i))
+              
+              answers.insert(correct, unquote(a["correct_answer"]))
+              
+              q = unquote(a["question"])
+              if a["type"] == "boolean":
+                msg = await message.channel.send(f"{q}\n\n**1.** {answers[0]}\n**2.** {answers[1]}")
+              else:
+                msg = await message.channel.send(f"{q}\n\n**1.** {answers[0]}\n**2.** {answers[1]}\n**3.** {answers[2]}\n**4.** {answers[3]}")
+
+              reactions_list = ["1️⃣", "2️⃣", "3️⃣", "4️⃣"]
+              for i in reactions_list:
+                await msg.add_reaction(i)
+
+              await asyncio.sleep(1)
+              
+              def check(reaction, user):
+                return user != bot.user
+              
+              reaction, user = await bot.wait_for('reaction_add', check=check, timeout=60.0)
+              if reactions_list.index(reaction.emoji) == correct:
+                await message.channel.send("correct lel. correct answer: " + unquote(a["correct_answer"]))
+              else:
+                await message.channel.send("incorrect bruh. correct answer: " + unquote(a["correct_answer"]))
+              
+              for i in reactions_list:
+                await msg.clear_reaction(i)
 
             elif text.startswith("set "):
                 if int(message.author.id) == 553093932012011520:
@@ -1264,7 +1299,8 @@ async def on_message(message):
                 failed.append(str(message.author.id))
             else:
                 state = False
-    except discord.errors.HTTPException:
+    except discord.errors.HTTPException as e:
+        print(str(traceback.format_exc()))
         await message.channel.send("So basiclly message is over 2000 symbols so i have no clue what is happening, command maybe ran maybe it crashed idk not my fault")
     except Exception as e:
         await message.reply("There is an error happend:\n" + str(traceback.format_exc()))
