@@ -299,7 +299,7 @@ async def on_message(message):
               await message.reply(f'Pong! Latency is {round(bot.latency * 1000)} ms!')
             
             elif text == 'help':
-                embed = discord.Embed(title="Help", description="'bored simon says', 'bored trivia, 'bored idea', 'bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00)
+                embed = discord.Embed(title="Help", description="'bored simon says', 'bored trivia, 'bored idea', 'bored rickroll', bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00)
                 embed.add_field(name="Economy commands", value="'bored passive, 'bored outside', 'bored bal', 'bored casino', 'bored rob', bored shop', 'bored reset', 'bored work', 'bored lb', 'bored murder', 'bored heist', bored weapon shop', 'bored heist shop' 'bored donate', 'bored daily', 'bored weekly'")
                 await message.reply(embed=add_ad(embed))
             
@@ -314,6 +314,10 @@ async def on_message(message):
 
             elif text == "coinflip":
                 await message.reply("syntax: bored coinflip <money> <heads or tails>\n(with no <> ofc)")
+
+            elif text == "rickroll":
+                rickrolls = ["https://youtu.be/vLRyJ0dawjM", "https://youtu.be/6vJwwRUtwMw", "https://youtu.be/aYsgsSo1aow", "https://youtu.be/bPZSDBvDmVw", "https://youtu.be/mW61VTLhNjQ", "https://youtu.be/s5wTiLJ9NVs", "https://youtu.be/dQw4w9WgXcQ"]
+                await message.reply(random.choice(rickrolls))
 
             elif text == "idea":
                 flist = ["go outside", "wait until m(._.)m goes online", "touch grass", "find user with 69 in their tag", "*H Y D R A T E*", "rickroll yourself"]
