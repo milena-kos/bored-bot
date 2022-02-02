@@ -277,6 +277,9 @@ async def on_message(message):
             text = text[6:]
             original = original[6:]
 
+            if get_value(message.author.id, "rep") == None:
+              change_value(message.author.id, "rep", 0)
+
             if random.randint(0, 20) == 14:
               val = give_money(message.author.id, get_value(message.author.id, "rep"), False)
               oh_prefix = "FUCK"
@@ -299,13 +302,17 @@ async def on_message(message):
               await message.reply(f'Pong! Latency is {round(bot.latency * 1000)} ms!')
             
             elif text == 'help':
-                embed = discord.Embed(title="Help", description="'bored simon says', 'bored trivia, 'bored idea', 'bored rickroll', bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00)
+                embed = discord.Embed(title="Help", description="'bored simon says', 'bored legal', bored trivia, 'bored idea', 'bored rickroll', bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
                 embed.add_field(name="Economy commands", value="'bored passive, 'bored outside', 'bored bal', 'bored casino', 'bored rob', bored shop', 'bored reset', 'bored work', 'bored lb', 'bored murder', 'bored heist', bored weapon shop', 'bored heist shop' 'bored donate', 'bored daily', 'bored weekly'")
                 await message.reply(embed=add_ad(embed))
             
             elif text == "casino":
                 await message.reply("gamble: bored coinflip, more commands later")
-            
+
+            elif text == "legal":
+                embed = discord.Embed(title="Legal", description="By using this bot you agree to the [Terms Of Service](https://docs.google.com/document/d/1SI7FZrKloBk_E7RyplW-tXiHKPcsE-7RWZ3AQZP1He0/edit?usp=sharing) and [Privacy Policy](https://docs.google.com/document/d/1xbeefSewYGOCP8gWDrw3I2rGt1MRZkS6ctluFuvkKvE/edit?usp=sharing) of it.")
+                await message.reply(embed=add_ad(embed))
+
             elif text == "why is my luck bad":
                 if random.randint(0, 1) == 0:
                   await message.reply("get good lol")
@@ -540,7 +547,7 @@ async def on_message(message):
 
                   value = '{:,}'.format(float(value))
                   string = string + value + "$" + rest + "\n"
-                embedVar = discord.Embed(title="Leaderboards:", description=string, color=0x00ff00)
+                embedVar = discord.Embed(title="Leaderboards:", description=string, color=0x00ff00).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
                 await message.reply(embed=add_ad(embedVar))
             
             elif text == "daily":
@@ -629,10 +636,10 @@ async def on_message(message):
 
                   change_value(person, value, amount)
                   result = "<@" + person + "> " + str(value) + " was set to " + str(amount) + "!"
-                  embedVar = discord.Embed(title="Success!", description=result, color=0x00ff00)
+                  embedVar = discord.Embed(title="Success!", description=result, color=0x00ff00).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
                   await message.reply(embed=add_ad(embedVar))
                 else:
-                  embedVar = discord.Embed(title="Failure!", description="You dont have permissions for this, dummy!", color=0xff2D00)
+                  embedVar = discord.Embed(title="Failure!", description="You dont have permissions for this, dummy!", color=0xff2D00).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
                   await message.reply(embed=add_ad(embedVar))
             
             elif text == "shop":
@@ -840,7 +847,7 @@ async def on_message(message):
                       result = "**GAIN**: you tried to rob <@" + to_rob + ">, and managed to rob them uncatched. you got " + str(give_money(message.author.id, money, False)) + "$ for that."
                       color = 0x00ff00
                       give_money(to_rob, -money, False)
-                    embedVar = discord.Embed(title="Rob result:", description=result, color=color)
+                    embedVar = discord.Embed(title="Rob result:", description=result, color=color).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
                     await message.reply(embed=add_ad(embedVar))
                     change_value(message.author.id, "rob_time", time())
                   else:
