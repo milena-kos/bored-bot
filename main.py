@@ -302,7 +302,7 @@ async def on_message(message):
               await message.reply(f'Pong! Latency is {round(bot.latency * 1000)} ms!')
             
             elif text == 'help':
-                embed = discord.Embed(title="Help", description="'bored simon says', 'bored legal', bored trivia, 'bored idea', 'bored rickroll', bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
+                embed = discord.Embed(title="Help", description="'bored simon says', 'bored legal', 'bored delete', 'bored privacy_policy', 'bored trivia, 'bored idea', 'bored rickroll', bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'", color=0x00ff00).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
                 embed.add_field(name="Economy commands", value="'bored passive, 'bored outside', 'bored bal', 'bored casino', 'bored rob', bored shop', 'bored reset', 'bored work', 'bored lb', 'bored murder', 'bored heist', bored weapon shop', 'bored heist shop' 'bored donate', 'bored daily', 'bored weekly'")
                 await message.reply(embed=add_ad(embed))
             
@@ -312,6 +312,32 @@ async def on_message(message):
             elif text == "legal":
                 embed = discord.Embed(title="Legal", description="By using this bot you agree to the [Terms Of Service](https://docs.google.com/document/d/1SI7FZrKloBk_E7RyplW-tXiHKPcsE-7RWZ3AQZP1He0/edit?usp=sharing) and [Privacy Policy](https://docs.google.com/document/d/1xbeefSewYGOCP8gWDrw3I2rGt1MRZkS6ctluFuvkKvE/edit?usp=sharing) of it.")
                 await message.reply(embed=add_ad(embed))
+
+            elif text == "privacy_policy":
+                embed = discord.Embed(title="Everything I know about you.", color=0x0066ff, description="Check [Privacy Policy](https://docs.google.com/document/d/1xbeefSewYGOCP8gWDrw3I2rGt1MRZkS6ctluFuvkKvE/edit?usp=sharing) for more info.")
+                file = open("balances.json", "r")
+                balances = json.load(file)
+                embed.add_field(name="userid", value=str(message.author.id), inline=True)
+                for a,b in balances[str(message.author.id)].items():
+                  embed.add_field(name=a, value=b, inline=True)
+                await message.reply(embed=add_ad(embed))
+                file.close()
+
+            elif text == "delete":
+                await message.reply("This will delete EVERYTHING bot knows about you. This includes all your money, multiplier, items, rep, passive income and everything else. Please use `bored delete agree` to progress.")
+
+            elif text == "delete agree":
+                await message.reply("Are You Sure? Reminder: This will delete EVERYTHING bot knows about you. Use `bored delete yes` to delete all your data.")
+
+            elif text == "delete yes":
+                file = open("balances.json", "r")
+                balances = json.load(file)
+                balances.pop(str(message.author.id))
+                file.close()
+                file1 = open("balances.json", "w")
+                json.dump(balances, file1)
+                file1.close()
+                await message.reply("Done! You can now put word \"bored\" into your blacklist or something like that.")
 
             elif text == "why is my luck bad":
                 if random.randint(0, 1) == 0:
