@@ -1,6 +1,6 @@
 import asyncio, requests, random, os, decimal, json, traceback, natsort, discord, math
 from time import sleep, time_ns, time
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 
 try:
   from replit import db
@@ -273,6 +273,10 @@ async def on_message(message):
             while True:
                 await user1.send(random.choice(["YOU GOT NUKED!!! KABOOM!!!", "BOOOM!! NUKE EXPLODED YOU!", "YOUR HOUSE WAS JUST BLOWN UP BY NUKE!!!", "BOOM BOOOM!! KAPOW!!!"]))
         
+        if text == "ddg":
+            pain = await message.channel.fetch_message(message.reference.message_id)
+            await message.channel.send("https://duckduckgo.com/" + quote(pain.content))
+
         if text.startswith('bored '):
             text = text[6:]
             original = original[6:]
