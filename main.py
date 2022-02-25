@@ -614,13 +614,23 @@ async def on_message(message):
                 string = ""
                 for i in results:
                   value, rest = i.split("$")
+                  value = float(value)
+                  try:
+                    if int(value) == value:
+                      value = int(value)
+                  except Exception:
+                    pass
 
-                  value = '{:,}'.format(float(value))
+                  value = '{:,}'.format(value)
                   string = string + value + "$" + rest + "\n"
                 for i in results1:
                   value, rest = i.split("$")
+                  if int(value) == float(value):
+                    value = int(value)
+                  else:
+                    value = float(value)
 
-                  value = '{:,}'.format(float(value))
+                  value = '{:,}'.format(value)
                   string = string + value + "$" + rest + "\n"
                 embedVar = discord.Embed(title="Leaderboards:", description=string, color=0x00ff00).set_author(name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more.")
                 await message.reply(embed=add_ad(embedVar))
