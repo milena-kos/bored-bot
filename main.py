@@ -726,7 +726,7 @@ async def on_message(message):
 
             elif text == "stats":
                 add_stat("Times stats command used:", 1)
-                embed = discord.Embed(title="Global Bot Stats.", color=0x0066FF)
+                embed = discord.Embed(title="Global Bot Stats", color=0x0066FF)
                 file = open("stats.json", "r")
                 stats = json.load(file)
 
