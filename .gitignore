@@ -1,6 +1,7 @@
 token_getter.py
 balances.json
 pi.json
+stats.json
 __pycache__
 keep_alive.py
 pyproject.toml
