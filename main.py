@@ -679,9 +679,9 @@ async def on_message(message):
                 results = requests.get(
                     "https://returnyoutubedislikeapi.com/votes?videoId=" + video[-11:]
                 ).json()
-                views = results["viewCount"]
-                likes = results["likes"]
-                dislikes = results["dislikes"]
+                views = add_commas(int(results["viewCount"]))
+                likes = add_commas(int(results["likes"]))
+                dislikes = add_commas(int(results["dislikes"]))
                 embed = discord.Embed(
                     title="Vid Stats",
                     color=0x123456,
