@@ -125,18 +125,13 @@ async def generate(queston_body, question_type, setuper, question_contents=None)
 
 
 def add_ad(embedVar):
-    ad = random.randint(0, 5)
+    ad = random.randint(0, 3)
     if ad == 0 or ad == 1:
         embedVar.set_footer(
-            text="donate to teamseas.org!",
-            icon_url="https://assets01.teamassets.net/assets/images/teamseas-logo.png",
-        )
-    elif ad == 2 or ad == 3:
-        embedVar.set_footer(
-            text="subscribe to my yt: youtube.com/c/Milenakos",
+            text="subscribe to my yt: youtube.com/Milenakos",
             icon_url="https://yt3.ggpht.com/ytc/AKedOLTBVtfNNsa1PvedSlLz9bzKYkNTDYF8dRVF46Bu=s88-c-k-c0x00ffffff-no-rj",
         )
-    elif ad == 4:
+    elif ad == 2:
         embedVar.set_footer(
             text="sub to pewds",
             icon_url="https://yt3.ggpht.com/5oUY3tashyxfqsjO5SGhjT4dus8FkN9CsAHwXWISFrdPYii1FudD4ICtLfuCw6-THJsJbgoY=s88-c-k-c0x00ffffff-no-rj",
@@ -656,7 +651,7 @@ async def on_message(message):
             elif text == "help":
                 embed = discord.Embed(
                     title="Help",
-                    description="'bored simon says', 'bored legal', 'bored delete', 'bored privacy_policy', 'bored trivia, 'bored idea', 'bored rickroll', bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'",
+                    description="'bored simon says', 'bored legal', 'bored delete', 'bored privacy_policy', 'bored trivia, 'bored idea', 'bored rickroll', 'bored dislike(s) <video url>', 'bored ai <text>', bored ttt', 'bored leave', 'bored simon make', 'bored joke', 'bored fact', 'bored pi', 'bored ping', 'bored uno'",
                     color=0x00FF00,
                 ).set_author(
                     name="By using this bot you agree to the Terms Of Service and Privacy Policy of it. `bored legal` for more."
@@ -676,6 +671,23 @@ async def on_message(message):
                         )
                     )
                 )
+
+            elif text.startswith("dislike"):
+                video = original
+                if video[-1] == "/":
+                    video = video[:-1]
+                results = requests.get(
+                    "https://returnyoutubedislikeapi.com/votes?videoId=" + video[-11:]
+                ).json()
+                views = results["viewCount"]
+                likes = results["likes"]
+                dislikes = results["dislikes"]
+                embed = discord.Embed(
+                    title="Vid Stats",
+                    color=0x123456,
+                    description=f"Views: {views}\nLikes: {likes}\nDislikes: {dislikes}",
+                )
+                await message.reply(embed=add_ad(embed))
 
             elif text == "legal":
                 embed = discord.Embed(
@@ -1533,7 +1545,10 @@ async def on_message(message):
                     await msg.clear_reaction(i)
 
             elif text.startswith("set "):
-                if int(message.author.id) == 553093932012011520:
+                if (
+                    int(message.author.id) == 553093932012011520
+                    or int(message.guild.id) == 904044893872226305
+                ):
                     text = original[4:]
                     things = text.split()
                     amount = things[0]
@@ -1973,8 +1988,6 @@ async def on_message(message):
                 add_stat("Times murder:", 1)
                 if not get_value(message.author.id, "murder_chance"):
                     change_value(message.author.id, "murder_chance", 20)
-                if get_value(message.author.id, "is_max_money") == True:
-                    change_value(message.author.id, "is_max_money", False)
                 if get_value(message.author.id, "murder_chance") == 20:
                     nt = "nt"
                 else:
@@ -2275,7 +2288,7 @@ async def on_message(message):
                     elif job == 5:
                         try:
                             response = requests.get(
-                                "https://opentdb.com/api.php?amount=1&type=boolean"
+                                "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986"
                             )
                             result = response.json()
                             req = result["results"][0]["correct_answer"].lower()
@@ -2283,14 +2296,7 @@ async def on_message(message):
                             await message.reply(
                                 "Trivia api got an error, please try again later."
                             )
-                        question = (
-                            result["results"][0]["question"]
-                            .replace("&amp;", "&")
-                            .replace("&quot;", '"')
-                            .replace("&apos;", "'")
-                            .replace("&gt;", ">")
-                            .replace("&lt;", "<")
-                        )
+                        question = unquote(result["results"][0]["question"])
                         await message.reply(
                             "TRIVIA JOB FOR <@"
                             + str(message.author.id)
@@ -2513,7 +2519,7 @@ async def on_message(message):
                     )
                     joke = response.json()
                     if joke["type"] == "twopart":
-                        await message.reply(joke["setup"])
+                        await message.reply(unquote(joke["setup"]))
                         await asyncio.sleep(3)
                         await message.channel.send(joke["delivery"])
                     elif joke["type"] == "single":
@@ -2534,7 +2540,7 @@ async def on_message(message):
                     response = requests.get("https://v2.jokeapi.dev/joke/Any")
                     joke = response.json()
                     if joke["type"] == "twopart":
-                        await message.reply(joke["setup"])
+                        await message.reply(unquote(joke["setup"]))
                         await asyncio.sleep(3)
                         await message.channel.send(joke["delivery"])
                     elif joke["type"] == "single":
@@ -2574,7 +2580,12 @@ async def on_message(message):
                 setuper = message.author
                 step = 1
                 setup = await message.reply(
-                    "Question setup (1/3):\n\n**What is text of your question?**\n\nThis is what bot will send when round starts."
+                    embed=add_ad(
+                        discord.Embed(
+                            color=0x00FF00,
+                            description="Question setup (1/3):\n\n**What is text of your question?**\n\nThis is what bot will send when round starts.",
+                        )
+                    )
                 )
                 await message.delete()
 
@@ -3406,7 +3417,7 @@ async def on_message(message):
             and message.channel == channel_check
             and (
                 int(message.author.id) != 834425748361445406
-                and int(user.id) != 904047456327729172
+                and int(message.author.id) != 904047456327729172
             )
         ):
             players.append(str(message.author.id))
