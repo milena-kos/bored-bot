@@ -1407,6 +1407,7 @@ async def on_message(message):
                     embedVar = discord.Embed(title="KK dude, updating!", color=0x00FF00)
                     await message.reply(embed=add_ad(embedVar))
                     result = str(subprocess.getoutput(["git", "pull"]))
+                    print(result)
                     await message.reply(result)
                     sys.stdout.flush()
                     os.execl(sys.executable, sys.executable, *sys.argv)
