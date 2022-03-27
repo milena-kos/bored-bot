@@ -266,10 +266,10 @@ async def on_message(message):
                 text = original.lower()
     except:
         await message.reply(
-                    embed=add_ad(
-                        discord.Embed(color=0xFF0000, description="sudo command error")
-                    )
-                )
+            embed=add_ad(
+                discord.Embed(color=0xFF0000, description="sudo command error")
+            )
+        )
     try:
         if (
             message.guild != None
@@ -605,9 +605,7 @@ async def on_message(message):
                 change_value(msg_author, "rep", 0)
 
             if random.randint(0, 20) == 14:
-                val = give_money(
-                    msg_author, get_value(msg_author, "rep"), False
-                )
+                val = give_money(msg_author, get_value(msg_author, "rep"), False)
                 oh_prefix = "FUCK"
                 if get_value(msg_author, "rep") > 0:
                     oh_prefix = "YEAH!"
@@ -719,9 +717,7 @@ async def on_message(message):
 
                 file = open("balances.json", "r")
                 balances = json.load(file)
-                embed.add_field(
-                    name="userid", value=str(msg_author), inline=True
-                )
+                embed.add_field(name="userid", value=str(msg_author), inline=True)
 
                 for a, b in balances[str(msg_author)].items():
                     embed.add_field(name=a, value=b, inline=True)
@@ -913,15 +909,11 @@ async def on_message(message):
                     change_value(msg_author, "passive_earnings_speed_cost", 100)
                     change_value(msg_author, "passive_earnings_max_cost", 100)
 
-                difference = time() - get_value(
-                    msg_author, "passive_earnings_time"
-                )
+                difference = time() - get_value(msg_author, "passive_earnings_time")
                 to_add = (difference / 60) * get_value(
                     msg_author, "passive_earnings_speed"
                 )
-                change_value(
-                    msg_author, "passive_earnings_balance", to_add, True
-                )
+                change_value(msg_author, "passive_earnings_balance", to_add, True)
                 change_value(msg_author, "passive_earnings_time", time())
 
                 if get_value(msg_author, "passive_earnings_balance") > get_value(
@@ -940,32 +932,18 @@ async def on_message(message):
                             title="Passsive earnings dashboard",
                             description="Balance: "
                             + str(
-                                round(
-                                    get_value(
-                                        msg_author, "passive_earnings_balance"
-                                    )
-                                )
+                                round(get_value(msg_author, "passive_earnings_balance"))
                             )
                             + "/"
                             + str(get_value(msg_author, "passive_earnings_max"))
                             + "$ (collect using bored collect)\n\n"
                             + "You are getting "
-                            + str(
-                                get_value(msg_author, "passive_earnings_speed")
-                            )
+                            + str(get_value(msg_author, "passive_earnings_speed"))
                             + " per minute.\n\nUpgrades:\n"
                             + "bored upgrade speed - "
-                            + str(
-                                get_value(
-                                    msg_author, "passive_earnings_speed_cost"
-                                )
-                            )
+                            + str(get_value(msg_author, "passive_earnings_speed_cost"))
                             + "$\nbored upgrade max - "
-                            + str(
-                                get_value(
-                                    msg_author, "passive_earnings_max_cost"
-                                )
-                            )
+                            + str(get_value(msg_author, "passive_earnings_max_cost"))
                             + "$\n\nTertia Optio:registered:",
                         )
                     )
@@ -973,20 +951,16 @@ async def on_message(message):
 
             elif text == "collect":
                 try:
-                    difference = time() - get_value(
-                        msg_author, "passive_earnings_time"
-                    )
+                    difference = time() - get_value(msg_author, "passive_earnings_time")
                     to_add = (difference / 60) * get_value(
                         msg_author, "passive_earnings_speed"
                     )
-                    change_value(
-                        msg_author, "passive_earnings_balance", to_add, True
-                    )
+                    change_value(msg_author, "passive_earnings_balance", to_add, True)
                     change_value(msg_author, "passive_earnings_time", time())
 
-                    if get_value(
-                        msg_author, "passive_earnings_balance"
-                    ) > get_value(msg_author, "passive_earnings_max"):
+                    if get_value(msg_author, "passive_earnings_balance") > get_value(
+                        msg_author, "passive_earnings_max"
+                    ):
                         change_value(
                             msg_author,
                             "passive_earnings_balance",
@@ -1020,9 +994,7 @@ async def on_message(message):
                         msg_author,
                         "passive_earnings_balance",
                         get_value(msg_author, "passive_earnings_balance")
-                        - round(
-                            get_value(msg_author, "passive_earnings_balance")
-                        ),
+                        - round(get_value(msg_author, "passive_earnings_balance")),
                     )
                 except TypeError:
                     await message.reply(
@@ -1547,9 +1519,7 @@ async def on_message(message):
                     nt = "nt"
                 else:
                     nt = ""
-                if random.randint(0, 100) > get_value(
-                    msg_author, "murder_chance"
-                ):
+                if random.randint(0, 100) > get_value(msg_author, "murder_chance"):
                     if not get_value(msg_author, "is_max_money"):
                         money = random.randint(40, 60)
                     else:
@@ -1592,9 +1562,7 @@ async def on_message(message):
                     difference = 99999
                 if difference >= 1800:
                     if get_value(msg_author, "heist_level"):
-                        chance_1, sum_1, chance_2, sum_2 = heist_level(
-                            msg_author
-                        )
+                        chance_1, sum_1, chance_2, sum_2 = heist_level(msg_author)
                         if random.randint(0, 100) < chance_1:
                             change_value(msg_author, "rep", -30, True)
                             await message.reply(

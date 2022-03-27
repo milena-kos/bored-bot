@@ -1,0 +1,32 @@
+{
+	"items": [		
+		{"item": "Weapon Shop Pass", "desc": "weapons lets go", "shop": "", "price": 500, "on_buy": {"weaponpass": 1}},
+		{"item": "Heist Shop Pass", "desc": "heist ig", "shop": "", "price": 10000, "on_buy": {"heistpass": 1}},
+		
+		{"item": "1.25x multiplier", "desc": "1.25x your income!", "shop": "", "price": 100000, "on_buy": {"multiplier": 1.25}},
+		{"item": "1.75x multiplier", "desc": "1.75x your income!", "shop": "", "price": 2000000, "on_buy": {"multiplier": 1.75}},
+		{"item": "2.5x multiplier", "desc": "2.5x your income!", "shop": "", "price": 10000000, "on_buy": {"multiplier": 2.5}},
+		{"item": "5x multiplier", "desc": "5x your income!", "shop": "", "price": 100000000, "on_buy": {"multiplier": 5}},
+		
+		{"item": "Small Knife", "desc": "haha your thingy is small", "price": 1000, "shop": "weapon", "on_buy": {"murder_chance": 25}},
+		{"item": "OK Knife", "desc": "kk knife (got it? it has 3 k's in a row)", "price": 3000, "shop": "weapon", "on_buy": {"murder_chance": 35}},
+		{"item": "Big Knife", "desc": "a nife i guess? idk", "price": 5000, "shop": "weapon", "on_buy": {"murder_chance": 45}},
+		{"item": "Small Gun", "desc": "haha your thingy is small x2", "price": 10000, "shop": "weapon", "on_buy": {"murder_chance": 55}},
+		{"item": "OK Gun", "desc": "\"aight gun\" - m(._.)m#5624\n\"Not bad; not good\" - SpaceCell#0501", "price": 15000, "shop": "weapon", "on_buy": {"murder_chance": 70}},
+		{"item": "Super Gun", "desc": "THE gun.", "price": 25000, "shop": "weapon", "on_buy": {"murder_chance": 80}},
+		{"item": "ShotGun", "desc": "gun but it is already shot. wait wha~~", "price": 30000, "shop": "weapon", "on_buy": {"murder_chance": 90}},
+		{"item": "Grenade", "desc": "haha small green thingy goes boom. (100% gain rate)", "price": 75000, "shop": "weapon", "on_buy": {"murder_chance": 100}},
+		
+		{"item": "Bad Heist Gear", "desc": "awful gear tbh, 1 star.", "price": 10000, "shop": "heist", "on_buy": {"heist_level": 1}},
+		{"item": "OK Heist Gear", "desc": "awful gear tbh, 1.5 stars.", "price": 25000, "shop": "heist", "on_buy": {"heist_level": 2}},
+		{"item": "Good Heist Gear", "desc": "\"aight g~~un~~ear\" - m(._.)m#5624\n\"Not bad; not good\" - SpaceCell#0501", "price": 50000, "shop": "heist", "on_buy": {"heist_level": 3}},
+		{"item": "Epic Heist Gear", "desc": "epic games gear", "price": 75000, "shop": "heist", "on_buy": {"heist_level": 4}},
+		{"item": "Really Good Heist Gear", "desc": "person who thought of this names is really bad at naming things. (im looking at you mm)", "price": 100000, "shop": "heist", "on_buy": {"heist_level": 5}},
+		{"item": "Amazing Heist Gear", "desc": "amazon gear?????!????&?&?&??", "price": 250000, "shop": "heist", "on_buy": {"heist_level": 6}},
+		{"item": "Fantastic Heist Gear", "desc": "dastish fantastish", "price": 500000, "shop": "heist", "on_buy": {"heist_level": 7}},
+		{"item": "Pro Heist Gear", "desc": "pro vs noob it minecraft but it is in heist gear instead", "price": 1000000, "shop": "heist", "on_buy": {"heist_level": 8}},
+		{"item": "Master Heist Gear", "desc": "fun fact: this server has {x} \"master\" (edit: im lazy to code this part)", "price": 5000000, "shop": "heist", "on_buy": {"heist_level": 9}},
+		{"item": "Godlike Heist Gear", "desc": "you are god????????????????//", "price": 10000000, "shop": "heist", "on_buy": {"heist_level": 10}},
+		{"item": "Hidden Heist Gear", "desc": "dont tell mm it isnt hidden, or else he will kill all my family.", "price": 100000000, "shop": "heist", "on_buy": {"heist_level": 11}}
+	]
+}
