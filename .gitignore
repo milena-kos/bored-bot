@@ -7,3 +7,4 @@ keep_alive.py
 pyproject.toml
 poetry.lock
 .breakpoints
+images

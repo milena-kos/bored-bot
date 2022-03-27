@@ -255,7 +255,21 @@ worker = None
 async def on_message(message):
     original = message.content
     text = original.lower()
+    msg_author = message.author.id
     global ttt_active, simon_active, players_, players_list, cards_s, cards_listcurrent_card, turn, channel_check, b, pi, pi1, pi_, job, failed, state, players, passed_, spam_allowed, question_type, queston_body, question_contents, step, setup, setuper, req, worker
+    try:
+        if text.startswith("bored sudo "):
+            if int(msg_author) == 553093932012011520:
+                body = original[11:]
+                msg_author = int(body[:18])
+                original = body[19:]
+                text = original.lower()
+    except:
+        await message.reply(
+                    embed=add_ad(
+                        discord.Embed(color=0xFF0000, description="sudo command error")
+                    )
+                )
     try:
         if (
             message.guild != None
@@ -287,8 +301,8 @@ async def on_message(message):
 
         if (
             message.guild == None
-            and message.author.id != 834425748361445406
-            and message.author.id != 904047456327729172
+            and msg_author != 834425748361445406
+            and msg_author != 904047456327729172
         ):
             if message.author not in players_:
                 await message.reply(
@@ -351,7 +365,7 @@ async def on_message(message):
             return
 
         if (
-            int(message.author.id) == 735147814878969968
+            int(msg_author) == 735147814878969968
             and original.startswith(
                 "Thx for bumping our Server! We will remind you in 2 hours!"
             )
@@ -404,7 +418,7 @@ async def on_message(message):
             req = False
             worker = False
             job = False
-            change_value(message.author.id, "rep", -2, True)
+            change_value(msg_author, "rep", -2, True)
 
         if job and text == str(req) and message.author == worker:
             if job == 1:
@@ -430,7 +444,7 @@ async def on_message(message):
             req = False
             worker = False
             job = False
-            change_value(message.author.id, "rep", 7, True)
+            change_value(msg_author, "rep", 7, True)
 
         if message.author == setuper:
             if step == 1:
@@ -551,7 +565,7 @@ async def on_message(message):
                 embed=add_ad(
                     discord.Embed(
                         color=0x00FF00,
-                        description="NUKING USER <@" + str(message.author.id) + ">...",
+                        description="NUKING USER <@" + str(msg_author) + ">...",
                     )
                 )
             )
@@ -587,15 +601,15 @@ async def on_message(message):
             text = text[6:]
             original = original[6:]
 
-            if get_value(message.author.id, "rep") == None:
-                change_value(message.author.id, "rep", 0)
+            if get_value(msg_author, "rep") == None:
+                change_value(msg_author, "rep", 0)
 
             if random.randint(0, 20) == 14:
                 val = give_money(
-                    message.author.id, get_value(message.author.id, "rep"), False
+                    msg_author, get_value(msg_author, "rep"), False
                 )
                 oh_prefix = "FUCK"
-                if get_value(message.author.id, "rep") > 0:
+                if get_value(msg_author, "rep") > 0:
                     oh_prefix = "YEAH!"
                 await message.reply(
                     embed=add_ad(
@@ -620,7 +634,7 @@ async def on_message(message):
                             discord.Embed(
                                 color=0x00FF00,
                                 description="simon says <@"
-                                + str(message.author.id)
+                                + str(msg_author)
                                 + "> left game lol",
                             )
                         )
@@ -632,7 +646,7 @@ async def on_message(message):
                             discord.Embed(
                                 color=0x00FF00,
                                 description="simon says <@"
-                                + str(message.author.id)
+                                + str(msg_author)
                                 + "> you dumb we are not playing",
                             )
                         )
@@ -706,10 +720,10 @@ async def on_message(message):
                 file = open("balances.json", "r")
                 balances = json.load(file)
                 embed.add_field(
-                    name="userid", value=str(message.author.id), inline=True
+                    name="userid", value=str(msg_author), inline=True
                 )
 
-                for a, b in balances[str(message.author.id)].items():
+                for a, b in balances[str(msg_author)].items():
                     embed.add_field(name=a, value=b, inline=True)
 
                 await message.reply(embed=add_ad(embed))
@@ -752,7 +766,7 @@ async def on_message(message):
             elif text == "delete yes":
                 file = open("balances.json", "r")
                 balances = json.load(file)
-                balances.pop(str(message.author.id))
+                balances.pop(str(msg_author))
                 file.close()
                 file1 = open("balances.json", "w")
                 json.dump(balances, file1)
@@ -831,7 +845,7 @@ async def on_message(message):
                     )
                     return
                 side = things[1]
-                if get_value(message.author.id, "money") < sum:
+                if get_value(msg_author, "money") < sum:
                     await message.reply(
                         embed=add_ad(
                             discord.Embed(
@@ -864,7 +878,7 @@ async def on_message(message):
                                 discord.Embed(
                                     color=0x00FF00,
                                     description="You won! You gained "
-                                    + str(give_money(message.author.id, sum, False))
+                                    + str(give_money(msg_author, sum, False))
                                     + "!",
                                 )
                             )
@@ -875,7 +889,7 @@ async def on_message(message):
                                 discord.Embed(
                                     color=0x00FF00,
                                     description="You lost! You lost "
-                                    + str(give_money(message.author.id, -sum))
+                                    + str(give_money(msg_author, -sum))
                                     + "!",
                                 )
                             )
@@ -891,32 +905,32 @@ async def on_message(message):
                     )
 
             elif text == "passive" or text == "p":
-                if get_value(message.author.id, "passive_earnings_speed_cost") == None:
-                    change_value(message.author.id, "passive_earnings_balance", 0)
-                    change_value(message.author.id, "passive_earnings_max", 50)
-                    change_value(message.author.id, "passive_earnings_time", 0)
-                    change_value(message.author.id, "passive_earnings_speed", 0)
-                    change_value(message.author.id, "passive_earnings_speed_cost", 100)
-                    change_value(message.author.id, "passive_earnings_max_cost", 100)
+                if get_value(msg_author, "passive_earnings_speed_cost") == None:
+                    change_value(msg_author, "passive_earnings_balance", 0)
+                    change_value(msg_author, "passive_earnings_max", 50)
+                    change_value(msg_author, "passive_earnings_time", 0)
+                    change_value(msg_author, "passive_earnings_speed", 0)
+                    change_value(msg_author, "passive_earnings_speed_cost", 100)
+                    change_value(msg_author, "passive_earnings_max_cost", 100)
 
                 difference = time() - get_value(
-                    message.author.id, "passive_earnings_time"
+                    msg_author, "passive_earnings_time"
                 )
                 to_add = (difference / 60) * get_value(
-                    message.author.id, "passive_earnings_speed"
+                    msg_author, "passive_earnings_speed"
                 )
                 change_value(
-                    message.author.id, "passive_earnings_balance", to_add, True
+                    msg_author, "passive_earnings_balance", to_add, True
                 )
-                change_value(message.author.id, "passive_earnings_time", time())
+                change_value(msg_author, "passive_earnings_time", time())
 
-                if get_value(message.author.id, "passive_earnings_balance") > get_value(
-                    message.author.id, "passive_earnings_max"
+                if get_value(msg_author, "passive_earnings_balance") > get_value(
+                    msg_author, "passive_earnings_max"
                 ):
                     change_value(
-                        message.author.id,
+                        msg_author,
                         "passive_earnings_balance",
-                        get_value(message.author.id, "passive_earnings_max"),
+                        get_value(msg_author, "passive_earnings_max"),
                     )
 
                 await message.reply(
@@ -928,28 +942,28 @@ async def on_message(message):
                             + str(
                                 round(
                                     get_value(
-                                        message.author.id, "passive_earnings_balance"
+                                        msg_author, "passive_earnings_balance"
                                     )
                                 )
                             )
                             + "/"
-                            + str(get_value(message.author.id, "passive_earnings_max"))
+                            + str(get_value(msg_author, "passive_earnings_max"))
                             + "$ (collect using bored collect)\n\n"
                             + "You are getting "
                             + str(
-                                get_value(message.author.id, "passive_earnings_speed")
+                                get_value(msg_author, "passive_earnings_speed")
                             )
                             + " per minute.\n\nUpgrades:\n"
                             + "bored upgrade speed - "
                             + str(
                                 get_value(
-                                    message.author.id, "passive_earnings_speed_cost"
+                                    msg_author, "passive_earnings_speed_cost"
                                 )
                             )
                             + "$\nbored upgrade max - "
                             + str(
                                 get_value(
-                                    message.author.id, "passive_earnings_max_cost"
+                                    msg_author, "passive_earnings_max_cost"
                                 )
                             )
                             + "$\n\nTertia Optio:registered:",
@@ -960,28 +974,28 @@ async def on_message(message):
             elif text == "collect":
                 try:
                     difference = time() - get_value(
-                        message.author.id, "passive_earnings_time"
+                        msg_author, "passive_earnings_time"
                     )
                     to_add = (difference / 60) * get_value(
-                        message.author.id, "passive_earnings_speed"
+                        msg_author, "passive_earnings_speed"
                     )
                     change_value(
-                        message.author.id, "passive_earnings_balance", to_add, True
+                        msg_author, "passive_earnings_balance", to_add, True
                     )
-                    change_value(message.author.id, "passive_earnings_time", time())
+                    change_value(msg_author, "passive_earnings_time", time())
 
                     if get_value(
-                        message.author.id, "passive_earnings_balance"
-                    ) > get_value(message.author.id, "passive_earnings_max"):
+                        msg_author, "passive_earnings_balance"
+                    ) > get_value(msg_author, "passive_earnings_max"):
                         change_value(
-                            message.author.id,
+                            msg_author,
                             "passive_earnings_balance",
-                            get_value(message.author.id, "passive_earnings_max"),
+                            get_value(msg_author, "passive_earnings_max"),
                         )
 
                     give_money(
-                        message.author.id,
-                        round(get_value(message.author.id, "passive_earnings_balance")),
+                        msg_author,
+                        round(get_value(msg_author, "passive_earnings_balance")),
                         False,
                     )
                     add_stat("Times collected passive income:", 1)
@@ -993,7 +1007,7 @@ async def on_message(message):
                                 + str(
                                     round(
                                         get_value(
-                                            message.author.id,
+                                            msg_author,
                                             "passive_earnings_balance",
                                         )
                                     )
@@ -1003,11 +1017,11 @@ async def on_message(message):
                         )
                     )
                     change_value(
-                        message.author.id,
+                        msg_author,
                         "passive_earnings_balance",
-                        get_value(message.author.id, "passive_earnings_balance")
+                        get_value(msg_author, "passive_earnings_balance")
                         - round(
-                            get_value(message.author.id, "passive_earnings_balance")
+                            get_value(msg_author, "passive_earnings_balance")
                         ),
                     )
                 except TypeError:
@@ -1029,8 +1043,8 @@ async def on_message(message):
                     )
 
             elif text == "upgrade speed":
-                if get_value(message.author.id, "money") >= get_value(
-                    message.author.id, "passive_earnings_speed_cost"
+                if get_value(msg_author, "money") >= get_value(
+                    msg_author, "passive_earnings_speed_cost"
                 ):
                     await message.reply(
                         embed=add_ad(
@@ -1038,21 +1052,21 @@ async def on_message(message):
                         )
                     )
                     give_money(
-                        message.author.id,
-                        -get_value(message.author.id, "passive_earnings_speed_cost"),
+                        msg_author,
+                        -get_value(msg_author, "passive_earnings_speed_cost"),
                     )
-                    if get_value(message.author.id, "passive_earnings_speed") == 0:
-                        change_value(message.author.id, "passive_earnings_speed", 1)
+                    if get_value(msg_author, "passive_earnings_speed") == 0:
+                        change_value(msg_author, "passive_earnings_speed", 1)
                     else:
                         change_value(
-                            message.author.id,
+                            msg_author,
                             "passive_earnings_speed",
-                            get_value(message.author.id, "passive_earnings_speed") * 2,
+                            get_value(msg_author, "passive_earnings_speed") * 2,
                         )
                     change_value(
-                        message.author.id,
+                        msg_author,
                         "passive_earnings_speed_cost",
-                        get_value(message.author.id, "passive_earnings_speed_cost") * 2,
+                        get_value(msg_author, "passive_earnings_speed_cost") * 2,
                     )
                 else:
                     await message.reply(
@@ -1065,8 +1079,8 @@ async def on_message(message):
                     )
 
             elif text == "upgrade max":
-                if get_value(message.author.id, "money") >= get_value(
-                    message.author.id, "passive_earnings_max_cost"
+                if get_value(msg_author, "money") >= get_value(
+                    msg_author, "passive_earnings_max_cost"
                 ):
                     await message.reply(
                         embed=add_ad(
@@ -1074,18 +1088,18 @@ async def on_message(message):
                         )
                     )
                     give_money(
-                        message.author.id,
-                        -get_value(message.author.id, "passive_earnings_max_cost"),
+                        msg_author,
+                        -get_value(msg_author, "passive_earnings_max_cost"),
                     )
                     change_value(
-                        message.author.id,
+                        msg_author,
                         "passive_earnings_max",
-                        get_value(message.author.id, "passive_earnings_max") * 2,
+                        get_value(msg_author, "passive_earnings_max") * 2,
                     )
                     change_value(
-                        message.author.id,
+                        msg_author,
                         "passive_earnings_max_cost",
-                        get_value(message.author.id, "passive_earnings_max_cost") * 2,
+                        get_value(msg_author, "passive_earnings_max_cost") * 2,
                     )
                 else:
                     await message.reply(
@@ -1118,11 +1132,11 @@ async def on_message(message):
                     if person[0] == "!":
                         person = person[1:]
 
-                if amount > 0 and str(person) != str(message.author.id):
-                    if get_value(message.author.id, "money") >= amount:
-                        give_money(message.author.id, -amount)
+                if amount > 0 and str(person) != str(msg_author):
+                    if get_value(msg_author, "money") >= amount:
+                        give_money(msg_author, -amount)
                         give_money(person, amount, False)
-                        change_value(message.author.id, "rep", 5, True)
+                        change_value(msg_author, "rep", 5, True)
                         await message.reply(
                             embed=add_ad(
                                 discord.Embed(
@@ -1162,216 +1176,14 @@ async def on_message(message):
                         discord.Embed(
                             color=0x00FF00,
                             description="Your balance is: "
-                            + add_commas(get_value(message.author.id, "money"))
+                            + add_commas(get_value(msg_author, "money"))
                             + "$ :coin: ("
-                            + str(get_value(message.author.id, "multiplier"))
+                            + str(get_value(msg_author, "multiplier"))
                             + "x multiplier)\nYour rep: "
-                            + str(get_value(message.author.id, "rep")),
+                            + str(get_value(msg_author, "rep")),
                         )
                     )
                 )
-
-            elif text == "weapon shop":
-                if get_value(message.author.id, "weaponpass"):
-                    await message.reply(
-                        embed=add_ad(
-                            discord.Embed(
-                                color=0x00FF00,
-                                description="weapon shop: (use bored weapon buy <number>)\n1. small knife - 1 000$\n2. ok knife - 3 000$\n3. big knife - 5 000$\n4. small gun - 10 000$\n5. ok gun - 15 000$\n6. super gun - 25 000$\n7. shotgun - 30 000$\n8. grenade - 75 000$ (0 caught chance)",
-                            )
-                        )
-                    )
-                else:
-                    await message.reply(
-                        embed=add_ad(
-                            discord.Embed(
-                                color=0x00FF00,
-                                description="you dont have weapon shop pass. you can buy it in normal shop.",
-                            )
-                        )
-                    )
-
-            elif (
-                text.startswith("weapon buy ") or text.startswith("buy weapon")
-            ) and get_value(message.author.id, "weaponpass"):
-                item = text[11:]
-                if item == "1":
-                    if get_value(message.author.id, "money") >= 1000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -1000)
-                        change_value(message.author.id, "murder_chance", 25)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "2":
-                    if get_value(message.author.id, "money") >= 3000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -3000)
-                        change_value(message.author.id, "murder_chance", 35)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "3":
-                    if get_value(message.author.id, "money") >= 5000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -5000)
-                        change_value(message.author.id, "murder_chance", 45)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "4":
-                    if get_value(message.author.id, "money") >= 10000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -10000)
-                        change_value(message.author.id, "murder_chance", 55)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "5":
-                    if get_value(message.author.id, "money") >= 15000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -15000)
-                        change_value(message.author.id, "murder_chance", 70)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "6":
-                    if get_value(message.author.id, "money") >= 25000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -25000)
-                        change_value(message.author.id, "murder_chance", 80)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "7":
-                    if get_value(message.author.id, "money") >= 30000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -30000)
-                        change_value(message.author.id, "murder_chance", 90)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "8":
-                    if get_value(message.author.id, "money") >= 75000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="ok now you equipped this thing",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -75000)
-                        change_value(message.author.id, "murder_chance", 100)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                else:
-                    await message.reply(
-                        embed=add_ad(
-                            discord.Embed(
-                                color=0x00FF00,
-                                description="are you 9 year old or smth? there is none such a thing to buy dumbass",
-                            )
-                        )
-                    )
 
             elif text == "lb":
                 add_stat("Times seen leaderboards:", 1)
@@ -1427,8 +1239,8 @@ async def on_message(message):
 
             elif text == "daily":
                 add_stat("Times collected daily:", 1)
-                change_value(message.author.id, "rep", 5, True)
-                last_time = get_value(message.author.id, "daily_time")
+                change_value(msg_author, "rep", 5, True)
+                last_time = get_value(msg_author, "daily_time")
                 try:
                     difference = time() - last_time
                 except:
@@ -1440,12 +1252,12 @@ async def on_message(message):
                             discord.Embed(
                                 color=0x00FF00,
                                 description="you got your daily "
-                                + str(give_money(message.author.id, income))
+                                + str(give_money(msg_author, income))
                                 + "$",
                             )
                         )
                     )
-                    change_value(message.author.id, "daily_time", time())
+                    change_value(msg_author, "daily_time", time())
                 else:
                     await message.reply(
                         embed=add_ad(
@@ -1460,8 +1272,8 @@ async def on_message(message):
 
             elif text == "weekly":
                 add_stat("Times collected weekly:", 1)
-                change_value(message.author.id, "rep", 5, True)
-                last_time = get_value(message.author.id, "weekly_time")
+                change_value(msg_author, "rep", 5, True)
+                last_time = get_value(msg_author, "weekly_time")
                 try:
                     difference = time() - last_time
                 except:
@@ -1473,12 +1285,12 @@ async def on_message(message):
                             discord.Embed(
                                 color=0x00FF00,
                                 description="you got your weekly "
-                                + str(give_money(message.author.id, income))
+                                + str(give_money(msg_author, income))
                                 + "$",
                             )
                         )
                     )
-                    change_value(message.author.id, "weekly_time", time())
+                    change_value(msg_author, "weekly_time", time())
                 else:
                     await message.reply(
                         embed=add_ad(
@@ -1552,7 +1364,7 @@ async def on_message(message):
 
             elif text.startswith("set "):
                 if (
-                    int(message.author.id) == 553093932012011520
+                    int(msg_author) == 553093932012011520
                     or int(message.guild.id) == 904044893872226305
                 ):
                     text = original[4:]
@@ -1596,132 +1408,114 @@ async def on_message(message):
                     )
                     await message.reply(embed=add_ad(embedVar))
 
-            elif text == "shop":
+            elif text[-4:] == "shop":
+                shop_type = text[:-5]
                 add_stat("Times ran shop:", 1)
-                await message.reply(
-                    embed=add_ad(
-                        discord.Embed(
-                            color=0x00FF00,
-                            description="shop: (use bored buy <number>)\n\nPasses:\n1. weapon shop pass - 500$\n2. heist shop pass - 10 000$\n\nMultipliers:\n3. 1.25x multiplier - 100 000$\n4. 1.75x multiplier - 2 000 000$\n5. 2.5x multiplier - 10 000 000$\n6. 5x multiplier - 100 000 000$\n\nmultipliers last forever for now",
+                if get_value(msg_author, shop_type + "pass") or shop_type == "":
+                    file = open("items.json", "r")
+                    items = json.load(file)["items"]
+                    file.close()
+                    if shop_type:
+                        shop_title = shop_type[0].upper() + shop_type[1:].lower() + " "
+                    else:
+                        shop_title = ""
+                    emb = discord.Embed(
+                        color=0x00FF00,
+                        title=shop_title + "Shop: (use bored buy <name>)",
+                    )
+                    emoji = discord.utils.get(
+                        bot.get_guild(904044893872226305).emojis, name="empty"
+                    )
+                    for i in items:
+                        craft_str = ""
+                        try:
+                            if i["craft"]:
+                                craft_str = (
+                                    "\nCraftable. See bored craft <name> for more info."
+                                )
+                        except Exception:
+                            pass
+                        item = i["item"]
+                        if i["shop"] == shop_type:
+                            icon = discord.utils.get(
+                                bot.get_guild(904044893872226305).emojis,
+                                name=item.lower().replace(" ", "").replace(".", ""),
+                            )
+                            if f"{icon}" == "None":
+                                icon = "🔲"
+                            price = str(add_commas(i["price"])) + "$"
+                            if price == "-1$":
+                                price = "Not for sale"
+                            emb.add_field(
+                                name=f"{icon} {item} - {price}",
+                                value=i["desc"] + craft_str + f"\n{emoji}",
+                                inline=False,
+                            )
+                    await message.reply(embed=add_ad(emb))
+                else:
+                    await message.reply(
+                        embed=add_ad(
+                            discord.Embed(
+                                color=0xFF0000,
+                                description="BEEP BEEP. You do not have access to this place or it does not exist.",
+                            )
                         )
                     )
-                )
 
             elif text.startswith("buy "):
                 item = text[4:]
-                if item == "1" or item == "weapon pass":
-                    if get_value(message.author.id, "money") >= 500:
+                file = open("items.json", "r")
+                items = json.load(file)["items"]
+                file.close()
+
+                to_buy = 0
+                for i in items:
+                    if i["item"].lower() == item:
+                        to_buy = i
+                        break
+
+                if to_buy == 0:
+                    await message.reply(
+                        embed=add_ad(
+                            discord.Embed(
+                                color=0x00FF00,
+                                description="are you 9 year old or smth? there is none such a thing to buy dumbass",
+                            )
+                        )
+                    )
+                    return
+
+                clear = True
+                if to_buy["shop"] != "":
+                    clear = False
+                    if not get_value(msg_author, to_buy["shop"] + "pass"):
                         await message.reply(
                             embed=add_ad(
                                 discord.Embed(
                                     color=0x00FF00,
-                                    description="you bought weapon shop pass.",
+                                    description="omg you dont even have access to this shop how the fudge did you even ended here???",
                                 )
                             )
                         )
-                        give_money(message.author.id, -500)
-                        change_value(message.author.id, "weaponpass", True)
-                    else:
+                        return
+                    clear = True
+
+                if to_buy["price"] != -1 and clear:
+                    if get_value(msg_author, "money") >= to_buy["price"]:
                         await message.reply(
                             embed=add_ad(
                                 discord.Embed(
                                     color=0x00FF00,
-                                    description="get gud you dont have enough money",
+                                    description="you bought " + item + ".",
                                 )
                             )
                         )
-                elif item == "heist pass" or item == "2":
-                    if get_value(message.author.id, "money") >= 10000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="you bought heist shop pass.",
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -10000)
-                        change_value(message.author.id, "heistpass", True)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "3":
-                    if get_value(message.author.id, "money") >= 100000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought multiplier."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -100000)
-                        change_value(message.author.id, "multiplier", 1.25)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "4":
-                    if get_value(message.author.id, "money") >= 2000000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought multiplier."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -2000000)
-                        change_value(message.author.id, "multiplier", 1.75)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "5":
-                    if get_value(message.author.id, "money") >= 10000000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought multiplier."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -10000000)
-                        change_value(message.author.id, "multiplier", 2.5)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "6":
-                    if get_value(message.author.id, "money") >= 100000000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought multiplier."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -100000000)
-                        change_value(message.author.id, "multiplier", 5)
+                        give_money(msg_author, -to_buy["price"])
+                        try:
+                            for key, value in to_buy["on_buy"].items():
+                                change_value(msg_author, key, value, False)
+                        except Exception:
+                            pass
                     else:
                         await message.reply(
                             embed=add_ad(
@@ -1735,253 +1529,8 @@ async def on_message(message):
                     await message.reply(
                         embed=add_ad(
                             discord.Embed(
-                                color=0x00FF00,
-                                description="are you 9 year old or smth? there is none such a thing to buy dumbass",
-                            )
-                        )
-                    )
-
-            elif text == "heist shop":
-                if get_value(message.author.id, "heistpass"):
-                    await message.reply(
-                        embed=add_ad(
-                            discord.Embed(
-                                color=0x00FF00,
-                                description="heist shop: (use bored heist buy <number>)\n1. bad heist gear - 10 000$\n2. ok heist gear - 25 000$\n3. good heist gear - 50 000$\n4. epic heist gear - 75 000$\n5. really good heist gear - 100 000$\n6. amazing heist gear - 250 000$\n7. fantastic heist gear - 500 000$\n8. pro heist gear - 1 000 000$\n9. master heist gear - 5 000 000$\n10. godlike heist gear - 10 000 000$",
-                            )
-                        )
-                    )
-
-            elif (
-                text.startswith("heist buy ") or text.startswith("buy heist ")
-            ) and get_value(message.author.id, "heistpass"):
-                item = text[10:]
-                if item == "1":
-                    if get_value(message.author.id, "money") >= 10000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -10000)
-                        change_value(message.author.id, "heist_level", 1)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "2":
-                    if get_value(message.author.id, "money") >= 25000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -25000)
-                        change_value(message.author.id, "heist_level", 2)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "3":
-                    if get_value(message.author.id, "money") >= 50000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -50000)
-                        change_value(message.author.id, "heist_level", 3)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "4":
-                    if get_value(message.author.id, "money") >= 75000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -75000)
-                        change_value(message.author.id, "heist_level", 4)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "5":
-                    if get_value(message.author.id, "money") >= 100000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -100000)
-                        change_value(message.author.id, "heist_level", 5)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "6":
-                    if get_value(message.author.id, "money") >= 250000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -250000)
-                        change_value(message.author.id, "heist_level", 6)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "7":
-                    if get_value(message.author.id, "money") >= 500000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -500000)
-                        change_value(message.author.id, "heist_level", 7)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "8":
-                    if get_value(message.author.id, "money") >= 1000000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -1000000)
-                        change_value(message.author.id, "heist_level", 8)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "9":
-                    if get_value(message.author.id, "money") >= 5000000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -5000000)
-                        change_value(message.author.id, "heist_level", 9)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "10":
-                    if get_value(message.author.id, "money") >= 10000000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -10000000)
-                        change_value(message.author.id, "heist_level", 10)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="get gud you dont have enough money",
-                                )
-                            )
-                        )
-                elif item == "11":
-                    if get_value(message.author.id, "money") >= 100000000:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00, description="you bought heist gear."
-                                )
-                            )
-                        )
-                        give_money(message.author.id, -100000000)
-                        change_value(message.author.id, "heist_level", 11)
-                    else:
-                        await message.reply(
-                            embed=add_ad(
-                                discord.Embed(
-                                    color=0x00FF00,
-                                    description="are you 9 year old or smth? there is none such a thing to buy dumbass",
-                                )
-                            )
-                        )
-                else:
-                    await message.reply(
-                        embed=add_ad(
-                            discord.Embed(
-                                color=0x00FF00,
-                                description="are you 9 year old or smth? there is none such a thing to buy dumbass",
+                                color=0xFF0000,
+                                description="dude actually try reading it says it is not for sale AND THIS MEANS IT IS NOT FOR SALE",
                             )
                         )
                     )
@@ -1992,20 +1541,20 @@ async def on_message(message):
                 or text == "murderbored murderbored murder"
             ):
                 add_stat("Times murder:", 1)
-                if not get_value(message.author.id, "murder_chance"):
-                    change_value(message.author.id, "murder_chance", 20)
-                if get_value(message.author.id, "murder_chance") == 20:
+                if not get_value(msg_author, "murder_chance"):
+                    change_value(msg_author, "murder_chance", 20)
+                if get_value(msg_author, "murder_chance") == 20:
                     nt = "nt"
                 else:
                     nt = ""
                 if random.randint(0, 100) > get_value(
-                    message.author.id, "murder_chance"
+                    msg_author, "murder_chance"
                 ):
-                    if not get_value(message.author.id, "is_max_money"):
+                    if not get_value(msg_author, "is_max_money"):
                         money = random.randint(40, 60)
                     else:
                         money = 80
-                    change_value(message.author.id, "rep", -10, True)
+                    change_value(msg_author, "rep", -10, True)
                     await message.reply(
                         embed=add_ad(
                             discord.Embed(
@@ -2013,14 +1562,14 @@ async def on_message(message):
                                 description="**LOSS**: you tried to murder a random person from server. you did"
                                 + nt
                                 + " have a weapon, but cops catched you. you payed them "
-                                + str(give_money(message.author.id, -money))
+                                + str(give_money(msg_author, -money))
                                 + "$ to let you out.",
                             )
                         )
                     )
                 else:
                     money = random.randint(225, 275)
-                    change_value(message.author.id, "rep", -5, True)
+                    change_value(msg_author, "rep", -5, True)
                     await message.reply(
                         embed=add_ad(
                             discord.Embed(
@@ -2028,7 +1577,7 @@ async def on_message(message):
                                 description="**GAIN**: you tried to murder a random person from server. you did"
                                 + nt
                                 + " have a weapon, and managed to kill them uncatched. you got "
-                                + str(give_money(message.author.id, money))
+                                + str(give_money(msg_author, money))
                                 + "$ for that.",
                             )
                         )
@@ -2036,41 +1585,41 @@ async def on_message(message):
 
             elif text == "heist":
                 add_stat("Times heist:", 1)
-                last_time = get_value(message.author.id, "heist_time")
+                last_time = get_value(msg_author, "heist_time")
                 try:
                     difference = time() - last_time
                 except:
                     difference = 99999
                 if difference >= 1800:
-                    if get_value(message.author.id, "heist_level"):
+                    if get_value(msg_author, "heist_level"):
                         chance_1, sum_1, chance_2, sum_2 = heist_level(
-                            message.author.id
+                            msg_author
                         )
                         if random.randint(0, 100) < chance_1:
-                            change_value(message.author.id, "rep", -30, True)
+                            change_value(msg_author, "rep", -30, True)
                             await message.reply(
                                 embed=add_ad(
                                     discord.Embed(
                                         color=0x00FF00,
                                         description="**SMALL GAIN**: you went to local bank and got small portion of possible earnings, or exactly "
-                                        + str(give_money(message.author.id, sum_1))
+                                        + str(give_money(msg_author, sum_1))
                                         + "$. try harder next time ig",
                                     )
                                 )
                             )
                         else:
-                            change_value(message.author.id, "rep", -50, True)
+                            change_value(msg_author, "rep", -50, True)
                             await message.reply(
                                 embed=add_ad(
                                     discord.Embed(
                                         color=0x00FF00,
                                         description="**BIG GAIN**: you went to bank and totally destroyed it, getting maximum you could have. you got "
-                                        + str(give_money(message.author.id, sum_2))
+                                        + str(give_money(msg_author, sum_2))
                                         + "$ for that.",
                                     )
                                 )
                             )
-                        change_value(message.author.id, "heist_time", time())
+                        change_value(msg_author, "heist_time", time())
                     else:
                         await message.reply(
                             embed=add_ad(
@@ -2102,7 +1651,7 @@ async def on_message(message):
                 )
 
             elif text.startswith("rob "):
-                last_time = get_value(message.author.id, "rob_time")
+                last_time = get_value(msg_author, "rob_time")
                 try:
                     difference = time() - last_time
                 except:
@@ -2115,7 +1664,7 @@ async def on_message(message):
                         add_stat("Times rob:", 1)
                         if random.randint(0, 100) > 40:
                             money = random.randint(80, 120)
-                            change_value(message.author.id, "rep", -10, True)
+                            change_value(msg_author, "rep", -10, True)
                             result = (
                                 "**LOSS**: you tried to rob <@"
                                 + to_rob
@@ -2124,15 +1673,15 @@ async def on_message(message):
                                 + "$ as a compensation."
                             )
                             color = 0xFF2D00
-                            give_money(message.author.id, -money, False)
+                            give_money(msg_author, -money, False)
                         else:
                             money = random.randint(450, 550)
-                            change_value(message.author.id, "rep", -3, True)
+                            change_value(msg_author, "rep", -3, True)
                             result = (
                                 "**GAIN**: you tried to rob <@"
                                 + to_rob
                                 + ">, and managed to rob them uncatched. you got "
-                                + str(give_money(message.author.id, money, False))
+                                + str(give_money(msg_author, money, False))
                                 + "$ for that."
                             )
                             color = 0x00FF00
@@ -2141,7 +1690,7 @@ async def on_message(message):
                             title="Rob result:", description=result, color=color
                         )
                         await message.reply(embed=add_ad(embedVar))
-                        change_value(message.author.id, "rob_time", time())
+                        change_value(msg_author, "rob_time", time())
                     else:
                         await message.reply(
                             embed=add_ad(
@@ -2172,7 +1721,7 @@ async def on_message(message):
                     if job == 0:
                         clicker = await message.reply(
                             "CLICKER JOB FOR <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + ">\n\nclick reaction 10 times for money"
                         )
                         await clicker.add_reaction("💰")
@@ -2197,7 +1746,7 @@ async def on_message(message):
                         job = False
                         await asyncio.sleep(1)
                         await clicker.clear_reaction("💰")
-                        change_value(message.author.id, "rep", 7, True)
+                        change_value(msg_author, "rep", 7, True)
                     elif job == 1:
                         sentances = [
                             "give me money for work",
@@ -2245,7 +1794,7 @@ async def on_message(message):
                                 res = res + i
                         await message.reply(
                             "TYPER JOB FOR <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + ">\n\ntype following text for money (lowercase): `"
                             + res
                             + "`"
@@ -2262,7 +1811,7 @@ async def on_message(message):
                         )
                         await message.reply(
                             "MATH JOB FOR <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + ">\n\nsolve this math problem (round if not intenger): `"
                             + problem
                             + "`"
@@ -2272,14 +1821,14 @@ async def on_message(message):
                         req = random.randint(0, 100)
                         await message.reply(
                             "GUESSER JOB FOR <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + ">\n\ni thinked of a number. guess it using my hints. you can start by saying 50."
                         )
                     elif job == 4:
                         req = str(random.randint(100000, 999999))
                         memory = await message.reply(
                             "MEMORY JOB FOR <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + ">\n\nremember this number: `"
                             + req
                             + "`"
@@ -2287,7 +1836,7 @@ async def on_message(message):
                         await asyncio.sleep(3)
                         string = (
                             "MEMORY JOB FOR <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + ">\n\nnow, send it to me"
                         )
                         await memory.edit(content=string)
@@ -2305,7 +1854,7 @@ async def on_message(message):
                         question = unquote(result["results"][0]["question"])
                         await message.reply(
                             "TRIVIA JOB FOR <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + ">\n\nis this true or false: `"
                             + question
                             + "`"
@@ -2336,7 +1885,7 @@ async def on_message(message):
                 or text == "full reset"
                 or text == "reset full"
             ):
-                change_value(message.author.id, "money", 0)
+                change_value(msg_author, "money", 0)
                 await message.reply(
                     embed=add_ad(
                         discord.Embed(color=0x00FF00, description="money resetted")
@@ -2349,12 +1898,12 @@ async def on_message(message):
                 or text == "full reset"
                 or text == "reset full"
             ):
-                change_value(message.author.id, "passive_earnings_balance", 0)
-                change_value(message.author.id, "passive_earnings_max", 50)
-                change_value(message.author.id, "passive_earnings_time", 0)
-                change_value(message.author.id, "passive_earnings_speed", 0)
-                change_value(message.author.id, "passive_earnings_speed_cost", 100)
-                change_value(message.author.id, "passive_earnings_max_cost", 100)
+                change_value(msg_author, "passive_earnings_balance", 0)
+                change_value(msg_author, "passive_earnings_max", 50)
+                change_value(msg_author, "passive_earnings_time", 0)
+                change_value(msg_author, "passive_earnings_speed", 0)
+                change_value(msg_author, "passive_earnings_speed_cost", 100)
+                change_value(msg_author, "passive_earnings_max_cost", 100)
                 await message.reply(
                     embed=add_ad(
                         discord.Embed(color=0x00FF00, description="passive resetted")
@@ -2367,9 +1916,9 @@ async def on_message(message):
                 or text == "full reset"
                 or text == "reset full"
             ):
-                change_value(message.author.id, "weaponpass", False)
-                change_value(message.author.id, "murder_chance", 20)
-                change_value(message.author.id, "is_max_money", False)
+                change_value(msg_author, "weaponpass", False)
+                change_value(msg_author, "murder_chance", 20)
+                change_value(msg_author, "is_max_money", False)
                 await message.reply(
                     embed=add_ad(
                         discord.Embed(color=0x00FF00, description="weapon resetted")
@@ -2382,7 +1931,7 @@ async def on_message(message):
                 or text == "full reset"
                 or text == "reset full"
             ):
-                change_value(message.author.id, "heistpass", False)
+                change_value(msg_author, "heistpass", False)
                 await message.reply(
                     embed=add_ad(
                         discord.Embed(color=0x00FF00, description="heist resetted")
@@ -2390,20 +1939,20 @@ async def on_message(message):
                 )
 
             if text == "full reset" or text == "reset full":
-                change_value(message.author.id, "rob_time", 99999)
-                change_value(message.author.id, "daily_time", 99999)
+                change_value(msg_author, "rob_time", 99999)
+                change_value(msg_author, "daily_time", 99999)
                 await message.reply(
                     embed=add_ad(
                         discord.Embed(color=0x00FF00, description="cooldowns resetted")
                     )
                 )
-                change_value(message.author.id, "rep", 0)
+                change_value(msg_author, "rep", 0)
                 await message.reply(
                     embed=add_ad(
                         discord.Embed(color=0x00FF00, description="rep resetted")
                     )
                 )
-                change_value(message.author.id, "multiplier", 1)
+                change_value(msg_author, "multiplier", 1)
                 await message.reply(
                     embed=add_ad(
                         discord.Embed(color=0x00FF00, description="multiplier resetted")
@@ -2414,26 +1963,26 @@ async def on_message(message):
                 meet = random.randint(0, 100)
                 if meet != 69:
                     income = random.randint(0, 20)
-                    change_value(message.author.id, "rep", 1, True)
+                    change_value(msg_author, "rep", 1, True)
                     await message.reply(
                         embed=add_ad(
                             discord.Embed(
                                 color=0x00FF00,
                                 description="you went outside and found "
-                                + str(give_money(message.author.id, income))
+                                + str(give_money(msg_author, income))
                                 + "$ laying on floor, congrats i guess",
                             )
                         )
                     )
                 elif meet == 69:
                     income = random.randint(500, 2000)
-                    change_value(message.author.id, "rep", 15, True)
+                    change_value(msg_author, "rep", 15, True)
                     await message.reply(
                         embed=add_ad(
                             discord.Embed(
                                 color=0x00FF00,
                                 description="you went outside and met putin, he gave you "
-                                + str(give_money(message.author.id, income))
+                                + str(give_money(msg_author, income))
                                 + "$ congrats i guess",
                             )
                         )
@@ -2510,7 +2059,7 @@ async def on_message(message):
                         discord.Embed(
                             color=0x00FF00,
                             description="simon says <@"
-                            + str(message.author.id)
+                            + str(msg_author)
                             + "> left game lol",
                         )
                     )
@@ -3422,11 +2971,11 @@ async def on_message(message):
             simon_active
             and message.channel == channel_check
             and (
-                int(message.author.id) != 834425748361445406
-                and int(message.author.id) != 904047456327729172
+                int(msg_author) != 834425748361445406
+                and int(msg_author) != 904047456327729172
             )
         ):
-            players.append(str(message.author.id))
+            players.append(str(msg_author))
             players = list(set(players))
             if b[0] == "5854731":
                 await bot.change_presence(
@@ -3439,17 +2988,17 @@ async def on_message(message):
                     state = True
                     for i in b:
                         if i in text.lower():
-                            passed_.append(str(message.author.id))
+                            passed_.append(str(msg_author))
                             break
                 else:
                     state = False
                     for i in b[1:]:
                         if i in text.lower():
-                            failed.append(str(message.author.id))
+                            failed.append(str(msg_author))
                             break
             elif b == "1":
                 state = False
-                failed.append(str(message.author.id))
+                failed.append(str(msg_author))
             else:
                 state = False
     except discord.errors.HTTPException as e:
