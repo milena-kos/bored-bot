@@ -815,15 +815,6 @@ async def on_message(message):
 
                 try:
                     sum = int(things[0])
-                    if sum <= 0:
-                       await message.reply(
-                        embed=add_ad(
-                            discord.Embed(
-                                color=0x00FF00, description="stop"
-                            )
-                        )
-                    )
-                        return 
                 except:
                     await message.reply(
                         embed=add_ad(
@@ -831,6 +822,12 @@ async def on_message(message):
                                 color=0x00FF00, description="you dumb money is number"
                             )
                         )
+                    )
+                    return
+
+                if sum <= 0:
+                    await message.reply(
+                        embed=add_ad(discord.Embed(color=0xFF0000, description="stop"))
                     )
                     return
                 side = things[1]
