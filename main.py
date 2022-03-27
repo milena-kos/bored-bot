@@ -264,6 +264,13 @@ async def on_message(message):
                 msg_author = int(body[:18])
                 original = body[19:]
                 text = original.lower()
+            else:
+                embedVar = discord.Embed(
+                    title="Failure!",
+                    description="You dont have permissions for this, dummy!",
+                    color=0xFF2D00,
+                )
+                await message.reply(embed=add_ad(embedVar))
     except:
         await message.reply(
             embed=add_ad(
