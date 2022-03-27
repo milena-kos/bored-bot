@@ -1406,7 +1406,10 @@ async def on_message(message):
                 if int(msg_author) == 553093932012011520:
                     embedVar = discord.Embed(title="KK dude, updating!", color=0x00FF00)
                     await message.reply(embed=add_ad(embedVar))
-                    result = str(subprocess.getoutput(["git pull"]))
+                    result = str(subprocess.getoutput(["git fetch --all"]))
+                    print(result)
+                    await message.reply(result)
+                    result = str(subprocess.getoutput(["git reset --hard origin/master"]))
                     print(result)
                     await message.reply(result)
                     sys.stdout.flush()
