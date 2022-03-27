@@ -1,4 +1,4 @@
-import asyncio, requests, random, os, decimal, json, traceback, natsort, discord, math
+import asyncio, requests, random, os, decimal, json, traceback, natsort, discord, math, sys, subprocess
 from time import sleep, time_ns, time
 from urllib.parse import unquote, quote
 
@@ -1386,6 +1386,55 @@ async def on_message(message):
                         color=0xFF2D00,
                     )
                     await message.reply(embed=add_ad(embedVar))
+
+            elif text.startswith("stop"):
+                if int(msg_author) == 553093932012011520:
+                    embedVar = discord.Embed(
+                        title="KK dude, shutting down!", color=0x00FF00
+                    )
+                    await message.reply(embed=add_ad(embedVar))
+                    exit()
+                else:
+                    embedVar = discord.Embed(
+                        title="Failure!",
+                        description="You dont have permissions for this, dummy!",
+                        color=0xFF2D00,
+                    )
+                    await message.reply(embed=add_ad(embedVar))
+
+            elif text.startswith("update"):
+                if int(msg_author) == 553093932012011520:
+                    embedVar = discord.Embed(
+                        title="KK dude, updating!", color=0x00FF00
+                    )
+                    await message.reply(embed=add_ad(embedVar))
+                    result = str(subprocess.getoutput(['git', 'pull']))
+                    await message.reply(result)
+                    sys.stdout.flush()
+                    os.execl(sys.executable, sys.executable, *sys.argv)
+                else:
+                    embedVar = discord.Embed(
+                        title="Failure!",
+                        description="You dont have permissions for this, dummy!",
+                        color=0xFF2D00,
+                    )
+                    await message.reply(embed=add_ad(embedVar))
+
+            elif text.startswith("restart"):
+                if int(msg_author) == 553093932012011520:
+                    embedVar = discord.Embed(
+                        title="KK dude, restaring!", color=0x00FF00
+                    )
+                    await message.reply(embed=add_ad(embedVar))
+                    sys.stdout.flush()
+                    os.execl(sys.executable, sys.executable, *sys.argv)
+                else:
+                    embedVar = discord.Embed(
+                        title="Failure!",
+                        description="You dont have permissions for this, dummy!",
+                        color=0xFF2D00,
+                    )
+                    await message.reply(embed=add_ad(embedVar))           
 
             elif text[-4:] == "shop":
                 shop_type = text[:-5]
