@@ -1404,11 +1404,9 @@ async def on_message(message):
 
             elif text.startswith("update"):
                 if int(msg_author) == 553093932012011520:
-                    embedVar = discord.Embed(
-                        title="KK dude, updating!", color=0x00FF00
-                    )
+                    embedVar = discord.Embed(title="KK dude, updating!", color=0x00FF00)
                     await message.reply(embed=add_ad(embedVar))
-                    result = str(subprocess.getoutput(['git', 'pull']))
+                    result = str(subprocess.getoutput(["git", "pull"]))
                     await message.reply(result)
                     sys.stdout.flush()
                     os.execl(sys.executable, sys.executable, *sys.argv)
@@ -1434,7 +1432,7 @@ async def on_message(message):
                         description="You dont have permissions for this, dummy!",
                         color=0xFF2D00,
                     )
-                    await message.reply(embed=add_ad(embedVar))           
+                    await message.reply(embed=add_ad(embedVar))
 
             elif text[-4:] == "shop":
                 shop_type = text[:-5]
