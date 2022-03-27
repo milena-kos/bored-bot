@@ -1409,7 +1409,9 @@ async def on_message(message):
                     result = str(subprocess.getoutput(["git fetch --all"]))
                     print(result)
                     await message.reply(result)
-                    result = str(subprocess.getoutput(["git reset --hard origin/master"]))
+                    result = str(
+                        subprocess.getoutput(["git reset --hard origin/master"])
+                    )
                     print(result)
                     await message.reply(result)
                     sys.stdout.flush()
