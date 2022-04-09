@@ -3100,9 +3100,25 @@ async def on_message(message):
             )
 
 
-if not is_beta:
-    my_secret = os.environ["token"]
-    keep_alive.keep_alive()
-    bot.run(my_secret)
-else:
-    bot.run(token_getter.token())
+try:
+    if not is_beta:
+        my_secret = os.environ["token"]
+        keep_alive.keep_alive()
+        bot.run(my_secret)
+    else:
+        bot.run(token_getter.token())
+except discord.erros.HTTPException:
+    url = os.environ["webhook"]
+
+    data = {
+        "content" : "Cloudflare punished me daddy uwu"
+    }
+
+    result = requests.post(url, json = data)
+
+    try:
+        result.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+    else:
+        print("Payload delivered successfully, code {}.".format(result.status_code))
